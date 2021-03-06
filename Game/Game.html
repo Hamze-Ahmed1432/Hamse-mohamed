@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>GRAND THEFT AUTO VICE CITY</title>
+
+    <style>
+      html {
+        font-family: sans-serif;
+      }
+
+      body {
+        width: 50%;
+        max-width: 800px;
+        min-width: 480px;
+        margin: 0 auto;
+      }
+
+      .lastResult {
+        color: orange;
+        padding: 3px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>GRAND THEFT AUTO VICE CITY</h1>
+
+    <p>Waxaan dooranay lambar aan kala sooc lahayn oo u dhexeeya 1 iyo 100. Eeg haddii aad ku qiyaasi karto 10 jeer ama wax ka yar. Waan kuu sheegi doonaa haddii malahaagu aad u sarreeyay ama aad u hooseeyay.</p>
+
+    <div class="form">
+      <label for="guessField">Fadlan geli numbar: </label><input type="text" id="guessField" class="guessField">
+      <input type="submit" value="Dhamaystir" class="guessSubmit">
+    </div>
+
+    <div class="resultParas">
+      <p class="guesses"></p>
+      <p class="lastResult"></p>
+      <p class="lowOrHi"></p>
+    </div>
+
+    <script>
+      let randomNumber = Math.floor(Math.random() * 100) + 1;
+      const guesses = document.querySelector('.guesses');
+      const lastResult = document.querySelector('.lastResult');
+      const lowOrHi = document.querySelector('.lowOrHi');
+      const guessSubmit = document.querySelector('.guessSubmit');
+      const guessField = document.querySelector('.guessField');
+      let guessCount = 1;
+      let resetButton;
+
+      function checkGuess() {
+        let userGuess = Number(guessField.value);
+        if (guessCount === 1) {
+          guesses.textContent = 'Iskuday hore: ';
+        }
+
+        guesses.textContent += userGuess + ' ';
+
+        if (userGuess === randomNumber) {
+          lastResult.textContent = 'Hambalyo! Iskuday fiican ayaad samaysay!';
+          lastResult.style.backgroundColor = 'green';
+          lowOrHi.textContent = '';
+          setGameOver();
+        } else if (guessCount === 10) {
+          lastResult.textContent = '!!!Wuu Dhamaaday!!!';
+          lowOrHi.textContent = '';
+          setGameOver();
+        } else {
+          lastResult.textContent = 'Iskuday gaagu wuu Qaldan yahay!';
+          lastResult.style.backgroundColor = 'orange';
+          if(userGuess < randomNumber) {
+            lowOrHi.textContent = 'Iskudayo hore oo Qaldan!' ;
+          } else if(userGuess > randomNumber) {
+            lowOrHi.textContent = 'Iskudayo hore oo Qaldan!';
+          }
+        }
+
+        guessCount++;
+        guessField.value = '';
+        guessField.focus();
+      }
+
+      guessSubmit.addEventListener('click', checkGuess);
+
+      function setGameOver() {
+        guessField.disabled = true;
+        guessSubmit.disabled = true;
+        resetButton = document.createElement('button');
+        resetButton.textContent = 'Billow iskuday Cusub';
+        document.body.appendChild(resetButton);
+        resetButton.addEventListener('click', resetGame);
+      }
+
+      function resetGame() {
+        guessCount = 1;
+        const resetParas = document.querySelectorAll('.resultParas p');
+        for(let i = 0 ; i < resetParas.length ; i++) {
+          resetParas[i].textContent = '';
+        }
+
+        resetButton.parentNode.removeChild(resetButton);
+        guessField.disabled = false;
+        guessSubmit.disabled = false;
+        guessField.value = '';
+        guessField.focus();
+        lastResult.style.backgroundColor = 'orange';
+        randomNumber = Math.floor(Math.random() * 100) + 1;
+      }
+    </script>
+  </body>
+</html
